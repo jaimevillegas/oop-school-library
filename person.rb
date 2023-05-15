@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 # Create a class person
 class Person
   # Getters and Setters
