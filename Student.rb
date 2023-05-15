@@ -12,6 +12,6 @@ class Student < Person
 
   # Method that returns a string
   def play_hooky
-    "¯\(ツ)/¯"
+    '¯\(ツ)/¯'
   end
 end
