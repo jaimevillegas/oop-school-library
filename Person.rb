@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Create a class person
 class Person
   # Getters and Setters
@@ -5,7 +7,7 @@ class Person
   attr_reader :id
 
   # Constructor with 3 parameters. 2 of them default
-  def initialize(age, name = "Unknown", parent_permission = true)
+  def initialize(age, name = 'Unknown', parent_permission: true)
     @id = Random.rand(1..100)
     @name = name
     @age = age
@@ -14,20 +16,18 @@ class Person
 
   # Returns true if person is of age or if they have permission from parents
   def can_use_services?
-    if (of_age? || @parent_permission)
-      return true
-    end
-    return false
+    return true if of_age? || @parent_permission
+
+    false
   end
 
-  # Private methods 
+  # Private methods
   private
 
   # Returns true if @age >= 18
   def of_age?
-    if @age >= 18
-      return true
-    end
-    return false
+    return true if @age >= 18
+
+    false
   end
 end
