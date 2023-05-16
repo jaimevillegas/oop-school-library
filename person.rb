@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 require './nameable'
 # Create a class person
 class Person < Nameable
