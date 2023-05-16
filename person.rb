@@ -1,5 +1,6 @@
+require './nameable'
 # Create a class person
-class Person
+class Person < Nameable
   # Getters and Setters
   attr_accessor :name, :age
   attr_reader :id
@@ -10,6 +11,7 @@ class Person
     @name = name
     @age = age
     @parent_permission = parent_permission
+    super()
   end
 
   # Returns true if person is of age or if they have permission from parents
@@ -17,6 +19,10 @@ class Person
     return true if of_age? || @parent_permission
 
     false
+  end
+
+  def correct_name
+    @name
   end
 
   # Private methods

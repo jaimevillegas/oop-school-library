@@ -1,14 +1,14 @@
 require './person'
 require './student'
 require './teacher'
+require './capitalize_decorator'
+require './trimmer_decorator'
 
 # This file is for testing purposes
 
-person1 = Person.new(26, 'Jaime', true)
-puts person1.can_use_services?
-
-person2 = Student.new(16, 'web programming', 'andres', false)
-puts person2.play_hooky
-
-person3 = Teacher.new(40, 'Multiverse Theory', 'Bruce Wayne')
-puts person3.can_use_services?
+puts person = Person.new(22, 'maximilianus')
+puts person.correct_name
+puts capitalized_person = CapitalizeDecorator.new(person)
+puts capitalized_person.correct_name
+puts capitalized_trimmed_person = TrimmerDecorator.new(capitalizedPerson)
+puts capitalized_trimmed_person.correct_name
