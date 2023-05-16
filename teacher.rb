@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require './person'
 
 # Class Teacher that inherits from Person
