@@ -25,6 +25,10 @@ class Person < Nameable
     @name
   end
 
+  def add_rental(rental)
+    @rentals << rental
+  end
+
   # Private methods
   private
 
