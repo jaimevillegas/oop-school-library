@@ -127,8 +127,8 @@ class App
     puts 'Rented books:'
     @rentals.each do |rental|
       if rental.person.id == id
-        print 'Person: #{rental.person.name} Date: #{rental.date} '
-        puts 'Book: #{rental.book.title}, Author: #{rental.book.author}'
+        print "Person: #{rental.person.name} Date: #{rental.date} "
+        puts "Book: #{rental.book.title}, Author: #{rental.book.author}"
       else
         puts 'No rentals found'
       end
