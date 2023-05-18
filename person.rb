@@ -1,17 +1,19 @@
 require './nameable'
+require './rental'
 # Create a class person
 class Person < Nameable
   # Getters and Setters
-  attr_accessor :name, :age
+  attr_accessor :name, :age, :rental
   attr_reader :id
 
   # Constructor with 3 parameters. 2 of them default
   def initialize(age, name = 'Unknown', parent_permission: true)
+    super()
     @id = Random.rand(1..100)
     @name = name
     @age = age
     @parent_permission = parent_permission
-    super()
+    @rental = []
   end
 
   # Returns true if person is of age or if they have permission from parents
@@ -25,8 +27,8 @@ class Person < Nameable
     @name
   end
 
-  def add_rental(rental)
-    @rentals << rental
+  def add_rental(book, date)
+    Rental.new(date, book, self)
   end
 
   # Private methods
