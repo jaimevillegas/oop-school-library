@@ -5,7 +5,7 @@ require './rental'
 require './book'
 require './classroom'
 
-class App 
+class App
   def initialize
     @books = []
     @persons = []
@@ -17,7 +17,7 @@ class App
     until list_of_options
       input = gets.chomp.to_i
       if input == 7
-        puts "Thanks for using School Library App!"
+        puts 'Thanks for using School Library App!'
         exit
       end
 
@@ -94,7 +94,7 @@ class App
     puts 'Author?'
     author = gets.chomp
     book = Book.new(title, author)
-    @books.push(book) 
+    @books.push(book)
     puts "Book #{title} created successfully"
   end
 
@@ -115,21 +115,22 @@ class App
     rental = Rental.new(date, @persons[person_id], @books[book_id])
     @rentals << rental
 
-    puts "Rental created successfully"
+    puts 'Rental created successfully'
   end
 
   def list_all_rentals
     puts 'Database is empty. Please add a rental' if @rentals.empty?
-    puts "Enter the ID of the rental you want to see"
+    puts 'Enter the ID of the rental you want to see'
     @persons.each { |person| puts "ID: #{person.id}, Name: #{person.name}" }
 
     id = gets.chomp.to_i
     puts 'Rented books:'
     @rentals.each do |rental|
       if rental.person.id == id
-        puts "Person: #{rental.person.name} Date: #{rental.date} Book: #{rental.book.title}, Author: #{rental.book.author}"
+        print 'Person: #{rental.person.name} Date: #{rental.date} '
+        puts 'Book: #{rental.book.title}, Author: #{rental.book.author}'
       else
-        puts "No rentals found"
+        puts 'No rentals found'
       end
     end
   end
