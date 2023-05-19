@@ -63,10 +63,10 @@ class App
     parent_permission = gets.chomp.downcase
     case parent_permission
     when 'y'
-      student = Student.new(name, age, parent_permission: true)
+      student = Students.new(name, age, parent_permission: true)
       @persons << student
     when 'n'
-      student = Student.new(name, age, parent_permission: false)
+      student = Students.new(name, age, parent_permission: false)
       @persons << student
     else
       puts 'Invalid option. Please try again'
