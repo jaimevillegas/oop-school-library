@@ -13,6 +13,7 @@ class App
     @books = []
     get_people
     get_books
+    get_rentals
   end
 
   def get_people
@@ -40,6 +41,16 @@ class App
     end
   end
 
+  def get_rentals
+    data = load_files('rentals.json')
+    if (File.exist?('rentals.json') && (File.read('rentals.json') != '[]'))
+      data.each do |rental|
+        newRental = Rental.new(rental["date"], rental["person"], rental["book"])
+        @rentals << newRental
+      end
+    end
+  end
+
   def load_files(file)
     if (File.exist?(file))
       File.open(file)
@@ -57,6 +68,7 @@ class App
       if input == 7
         save_people
         save_books
+        save_rentals
         puts 'Thanks for using School Library App!'
         exit
       end
@@ -208,6 +220,19 @@ class App
       saved_books.push(bookHash)
     end
     File.write('./books.json', JSON.generate(saved_books))
+  end
+
+
+  def save_rentals
+    saved_rentals = []
+    @rentals.each do |rental|
+      rentalHash = {}
+      rentalHash[:date] = rental.date
+      rentalHash[:person] = rental.person
+      rentalHash[:book] = rental.book
+      saved_rentals.push(rentalHash)
+    end
+    File.write('./rentals.json', JSON.generate(saved_rentals))
   end
 
 
