@@ -3,13 +3,12 @@ require './rental'
 # Create a class person
 class Person < Nameable
   # Getters and Setters
-  attr_accessor :name, :age, :rental
-  attr_reader :id
+  attr_accessor :name, :age, :rental, :id
 
   # Constructor with 3 parameters. 2 of them default
-  def initialize(age, name = 'Unknown', parent_permission: true)
+  def initialize(age, name = 'Unknown', id = Random.rand(1..100), parent_permission: true)
     super()
-    @id = Random.rand(1..100)
+    @id = id
     @name = name
     @age = age
     @parent_permission = parent_permission

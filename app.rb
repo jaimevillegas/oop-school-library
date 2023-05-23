@@ -4,12 +4,16 @@ require './teacher'
 require './rental'
 require './book'
 require './classroom'
+require 'json'
+require './file_operation'
 
 class App
+  include FileOperation
+
   def initialize
-    @books = []
-    @persons = []
-    @rentals = []
+    @persons = read_people
+    @books = read_books
+    @rentals = read_rentals(@persons, @books)
   end
 
   def welcome
@@ -17,10 +21,12 @@ class App
     until list_of_options
       input = gets.chomp.to_i
       if input == 7
+        save_people(@persons)
+        save_books(@books)
+        save_rentals(@rentals)
         puts 'Thanks for using School Library App!'
         exit
       end
-
       option input
     end
   end
@@ -101,20 +107,14 @@ class App
   def create_rental
     puts 'Select wich book you want to rent by its ID'
     @books.each_with_index { |book, index| puts "#{index}. Title: #{book.title}, Author: #{book.author}" }
-
     book_id = gets.chomp.to_i
-
     puts 'Select wich person will rent the book by its ID'
     @persons.each_with_index { |person, index| puts "#{index}. Name: #{person.name}, Age: #{person.age}" }
-
     person_id = gets.chomp.to_i
-
     puts 'Date?'
     date = gets.chomp.to_s
-
     rental = Rental.new(date, @persons[person_id], @books[book_id])
     @rentals << rental
-
     puts 'Rental created successfully'
   end
 
@@ -122,7 +122,6 @@ class App
     puts 'Database is empty. Please add a rental' if @rentals.empty?
     puts 'Enter the ID of the rental you want to see'
     @persons.each { |person| puts "ID: #{person.id}, Name: #{person.name}" }
-
     id = gets.chomp.to_i
     puts 'Rented books:'
     @rentals.each do |rental|
