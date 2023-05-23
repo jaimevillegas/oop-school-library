@@ -12,11 +12,8 @@ class App
 
   def initialize
     @persons = read_people
-    @books = read_books 
+    @books = read_books
     @rentals = read_rentals(@persons, @books)
-    
-    
-    
   end
 
   def welcome

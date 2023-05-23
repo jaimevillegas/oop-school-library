@@ -9,7 +9,7 @@ module FileOperation
     people = []
     data = load_files('people.json')
     return unless File.exist?('people.json') && (File.read('people.json') != '[]')
-    
+
     data['students'].each do |student|
       new_student = Student.new(student['age'], student['name'], student['id'])
       people << new_student
