@@ -5,65 +5,18 @@ require './rental'
 require './book'
 require './classroom'
 require 'json'
-require 'pry'
+require './file_operation'
 
 class App
+  include FileOperation
+
   def initialize
-    #importedBooks = load_files('books.json')
-    @persons = []
+    @persons = read_people
     @rentals = []
     @books = []
-    get_people
-    get_books
-    get_rentals
-  end
-
-  def get_people
-    data = load_files('people.json')
-    if (File.exist?('people.json') && (File.read('people.json') != '[]'))
-      data["students"].each do |student|
-        newStudent = Student.new(student["age"], student["name"], student["id"])
-        @persons << newStudent
-      end
-
-      data["teachers"].each do |teacher|
-        newTeacher = Teacher.new(teacher["age"], teacher["name"], teacher["specialization"], teacher["id"])
-        @persons << newTeacher
-      end
-    end
-  end
-
-  def get_books
-    data = load_files('books.json')
-    if (File.exist?('books.json') && (File.read('books.json') != '[]'))
-      data.each do |book|
-        newBook = Book.new(book["title"], book["author"])
-        @books << newBook
-      end
-    end
-  end
-
-  def get_rentals
-    data = load_files('rentals.json')
-    # binding.pry
-    if (File.exist?('rentals.json') && (File.read('rentals.json') != '[]'))
-      data.each do |rental|
-        person = @persons.select {|person| person.id == rental["person_id"]}
-        book = @books.select {|book| book.title == rental["book_title"]}
-        newRental = Rental.new(rental["date"], person[0], book[0])
-        @rentals << newRental
-      end
-    end
-  end
-
-  def load_files(file)
-    if (File.exist?(file))
-      File.open(file)
-    else
-      File.open(file, 'w') { |f| f.write([])}
-    end
-
-    fileParsed = JSON.parse(File.read(file))
+    
+    read_books
+    read_rentals
   end
 
   def welcome
@@ -77,7 +30,6 @@ class App
         puts 'Thanks for using School Library App!'
         exit
       end
-
       option input
     end
   end
@@ -158,20 +110,14 @@ class App
   def create_rental
     puts 'Select wich book you want to rent by its ID'
     @books.each_with_index { |book, index| puts "#{index}. Title: #{book.title}, Author: #{book.author}" }
-
     book_id = gets.chomp.to_i
-
     puts 'Select wich person will rent the book by its ID'
     @persons.each_with_index { |person, index| puts "#{index}. Name: #{person.name}, Age: #{person.age}" }
-
     person_id = gets.chomp.to_i
-
     puts 'Date?'
     date = gets.chomp.to_s
-
     rental = Rental.new(date, @persons[person_id], @books[book_id])
     @rentals << rental
-
     puts 'Rental created successfully'
   end
 
@@ -179,7 +125,6 @@ class App
     puts 'Database is empty. Please add a rental' if @rentals.empty?
     puts 'Enter the ID of the rental you want to see'
     @persons.each { |person| puts "ID: #{person.id}, Name: #{person.name}" }
-
     id = gets.chomp.to_i
     puts 'Rented books:'
     @rentals.each do |rental|
@@ -191,57 +136,4 @@ class App
       end
     end
   end
-
-  private
-
-  def save_people
-    saved_people = {
-      "students": [], 
-      "teachers": []
-    }
-    @persons.each do |person|
-      if person.is_a?(Student)
-        student = {}
-        student[:name] = person.name 
-        student[:age] = person.age 
-        student[:id] = person.id
-        saved_people[:students].push(student)
-      elsif person.is_a?(Teacher)
-        teacher = {}
-        teacher[:name] = person.name 
-        teacher[:age] = person.age 
-        teacher[:specialization] = person.specialization 
-        teacher[:id] = person.id
-        saved_people[:teachers].push(teacher)
-      end
-    end
-    File.write('./people.json', JSON.generate(saved_people))
-  end
-
-  def save_books
-    saved_books = []
-    @books.each do |book|
-      bookHash = {}
-      bookHash[:author] = book.author
-      bookHash[:title] = book.title
-      saved_books.push(bookHash)
-    end
-    File.write('./books.json', JSON.generate(saved_books))
-  end
-
-
-  def save_rentals
-    saved_rentals = []
-    @rentals.each do |rental|
-      rentalHash = {}
-      rentalHash[:date] = rental.date
-      rentalHash[:person_id] = rental.person.id
-      rentalHash[:book_title] = rental.book.title
-      saved_rentals.push(rentalHash)
-    end
-    File.write('./rentals.json', JSON.generate(saved_rentals))
-  end
-
-
-
 end

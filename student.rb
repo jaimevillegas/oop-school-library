@@ -3,7 +3,7 @@ require './person'
 # Class Student that inherits from Person
 class Student < Person
   # Constructor that extends parent's constructor by adding @classroom and a parameter for it
-  def initialize(age, name, id, parent_permission: true)
+  def initialize(age, name, id = Random.rand(1..100), parent_permission: true)
     super(age, name, id, parent_permission: parent_permission)
   end
 
