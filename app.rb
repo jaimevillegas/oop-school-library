@@ -12,11 +12,11 @@ class App
 
   def initialize
     @persons = read_people
-    @rentals = []
-    @books = []
+    @books = read_books 
+    @rentals = read_rentals(@persons, @books)
     
-    read_books
-    read_rentals
+    
+    
   end
 
   def welcome
@@ -24,9 +24,9 @@ class App
     until list_of_options
       input = gets.chomp.to_i
       if input == 7
-        save_people
-        save_books
-        save_rentals
+        save_people(@persons)
+        save_books(@books)
+        save_rentals(@rentals)
         puts 'Thanks for using School Library App!'
         exit
       end
