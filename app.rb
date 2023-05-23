@@ -5,8 +5,6 @@ require './rental'
 require './book'
 require './classroom'
 require 'json'
-# require 'pry'
-
 class App
   def initialize
     #importedBooks = load_files('books.json')
@@ -15,20 +13,19 @@ class App
     @books = []
     get_people
     get_books
-    get_rentals
-  
+    # get_rentals
   end
 
   def get_people
     data = load_files('people.json')
     if (File.exist?('people.json') && (File.read('people.json') != '[]'))
       data["students"].each do |student|
-        newStudent = Student.new(student["age"], student["name"])
+        newStudent = Student.new(student["age"], student["name"], student["id"])
         @persons << newStudent
       end
 
       data["teachers"].each do |teacher|
-        newTeacher = Teacher.new(teacher["age"], teacher["name"], teacher["specialization"])
+        newTeacher = Teacher.new(teacher["age"], teacher["name"], teacher["specialization"], teacher["id"])
         @persons << newTeacher
       end
     end
@@ -48,7 +45,7 @@ class App
     data = load_files('rentals.json')
     if (File.exist?('rentals.json') && (File.read('rentals.json') != '[]'))
       data.each do |rental|
-        newRental = Rental.new(rental["date"], rental["person_id"], rental["book_id"])
+        newRental = Rental.new(rental["date"], rental["person"], rental["book"])
         @rentals << newRental
       end
     end
@@ -202,12 +199,14 @@ class App
         student = {}
         student[:name] = person.name 
         student[:age] = person.age 
+        student[:id] = person.id
         saved_people[:students].push(student)
       elsif person.is_a?(Teacher)
         teacher = {}
         teacher[:name] = person.name 
         teacher[:age] = person.age 
         teacher[:specialization] = person.specialization 
+        teacher[:id] = person.id
         saved_people[:teachers].push(teacher)
       end
     end
@@ -231,11 +230,12 @@ class App
     @rentals.each do |rental|
       rentalHash = {}
       rentalHash[:date] = rental.date
-      rentalHash[:person] = rental.person
-      rentalHash[:book] = rental.book
+      rentalHash[:ID] = Random.rand(1..100)
+      rentalHash[:person] = rental.person.name
+      rentalHash[:bookName] = rental.book.title
+      rentalHash[:bookAuthor] = rental.book.author
       saved_rentals.push(rentalHash)
     end
-    # binding.pry
     File.write('./rentals.json', JSON.generate(saved_rentals))
   end
 
