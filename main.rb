@@ -1,8 +1,16 @@
 require './app'
 
 def main
-  app = App.new
+  booksJson = load_files('books.json')
+  peopleJson = load_files('people.json')
+  rentalsJson = load_files('rentals.json')
+  app = App.new(booksJson, peopleJson, rentalsJson)
   app.welcome
+end
+
+def load_files(file)
+  File.open(file, 'w') {|f| f.write([])}
+  fileParsed = JSON.parse(File.read(file))
 end
 
 def list_of_options

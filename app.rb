@@ -4,12 +4,13 @@ require './teacher'
 require './rental'
 require './book'
 require './classroom'
+require 'json'
 
 class App
-  def initialize
-    @books = []
-    @persons = []
-    @rentals = []
+  def initialize(books = [], persons = [], rentals = [])
+    @books = books
+    @persons = persons
+    @rentals = rentals
   end
 
   def welcome
