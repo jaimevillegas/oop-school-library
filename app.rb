@@ -5,6 +5,8 @@ require './rental'
 require './book'
 require './classroom'
 require 'json'
+require 'pry'
+
 class App
   def initialize
     #importedBooks = load_files('books.json')
@@ -13,7 +15,7 @@ class App
     @books = []
     get_people
     get_books
-    # get_rentals
+    get_rentals
   end
 
   def get_people
@@ -43,9 +45,12 @@ class App
 
   def get_rentals
     data = load_files('rentals.json')
+    # binding.pry
     if (File.exist?('rentals.json') && (File.read('rentals.json') != '[]'))
       data.each do |rental|
-        newRental = Rental.new(rental["date"], rental["person"], rental["book"])
+        person = @persons.select {|person| person.id == rental["person_id"]}
+        book = @books.select {|book| book.title == rental["book_title"]}
+        newRental = Rental.new(rental["date"], person[0], book[0])
         @rentals << newRental
       end
     end
@@ -230,10 +235,8 @@ class App
     @rentals.each do |rental|
       rentalHash = {}
       rentalHash[:date] = rental.date
-      rentalHash[:ID] = Random.rand(1..100)
-      rentalHash[:person] = rental.person.name
-      rentalHash[:bookName] = rental.book.title
-      rentalHash[:bookAuthor] = rental.book.author
+      rentalHash[:person_id] = rental.person.id
+      rentalHash[:book_title] = rental.book.title
       saved_rentals.push(rentalHash)
     end
     File.write('./rentals.json', JSON.generate(saved_rentals))
