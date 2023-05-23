@@ -4,7 +4,7 @@ require './teacher'
 require './rental'
 require './book'
 require './classroom'
-
+require 'json'
 class App
   def initialize
     @books = []
@@ -17,6 +17,7 @@ class App
     until list_of_options
       input = gets.chomp.to_i
       if input == 7
+        save_people
         puts 'Thanks for using School Library App!'
         exit
       end
@@ -134,4 +135,29 @@ class App
       end
     end
   end
+
+  private
+
+  def save_people
+    saved_people = {
+      "students": [], 
+      "teachers": []
+    }
+    @persons.each do |person|
+      if person.is_a?(Student)
+        student = {}
+        student[:name] = person.name 
+        student[:age] = person.age 
+        saved_people[:students].push(student)
+      elsif person.is_a?(Teacher)
+        teacher = {}
+        teacher[:name] = person.name 
+        teacher[:age] = person.age 
+        teacher[:specialization] = person.specialization 
+        saved_people[:teachers].push(teacher)
+      end
+    end
+    File.write('./people.json', JSON.generate(saved_people))
+  end
+
 end
