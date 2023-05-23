@@ -7,9 +7,38 @@ require './classroom'
 require 'json'
 class App
   def initialize
-    @books = []
+    #importedBooks = load_files('books.json')
     @persons = []
     @rentals = []
+    @books = []
+    get_people
+  end
+
+  def get_people
+    data = load_files('people.json')
+    if (File.exist?('people.json') && (File.read('people.json') != '[]'))
+      data["students"].each do |student|
+        newStudent = Student.new(student["age"], student["name"])
+        @persons << newStudent
+      end
+
+      data["teachers"].each do |teacher|
+        newTeacher = Teacher.new(teacher["age"], teacher["name"], teacher["specialization"])
+        @persons << newTeacher
+      end
+    end
+  end
+
+  
+
+  def load_files(file)
+    if (File.exist?(file))
+      File.open(file)
+    else
+      File.open(file, 'w') { |f| f.write([])}
+    end
+
+    fileParsed = JSON.parse(File.read(file))
   end
 
   def welcome
