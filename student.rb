@@ -7,6 +7,11 @@ class Student < Person
     super(age, name, id, parent_permission: parent_permission)
   end
 
+  def classroom=(classroom)
+    @classroom = classroom
+    classroom.student.push(self) unless classroom.students.include?(self)
+  end
+
   # Method that returns a string
   def play_hooky
     '¯\(ツ)/¯'
